@@ -29,5 +29,40 @@
  * @returns {number} Shipping cost, 0 for free shipping, or -1 for invalid input
  */
 export function calculateShipping(weight, country, orderTotal) {
-  // Your code here
+   if (weight <= 0 || orderTotal < 0) return -1;
+   const isDomesticShiping = country === "US";
+   let totalWeightPrice = 0;
+    // Domestic shipping logic;  
+    if (isDomesticShiping) {
+        if(weight > 0  && weight <= 1){
+          totalWeightPrice = 5;
+        }
+        else if(weight > 1 && weight <= 5){
+          totalWeightPrice = 10;
+        }
+        else{
+          totalWeightPrice = 15;
+        }
+    }
+    // international shipping logic
+    if (!isDomesticShiping) {
+        if(weight > 0  && weight <= 1){
+          totalWeightPrice = 15;
+        }
+        else if(weight > 1 && weight <= 5){
+          totalWeightPrice = 25;
+        }
+        else{
+          totalWeightPrice = 40;
+        }
+    }
+
+    // calcuting total shipping price
+    let totalShippingCost = totalWeightPrice * orderTotal;
+
+    // free shipping condition check
+    if(totalShippingCost < 50 && isDomesticShiping ) return 0;
+    if(totalShippingCost < 100 && !isDomesticShiping ) return 0;
+
+    return totalShippingCost;
 }
